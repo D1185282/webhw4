@@ -19,6 +19,10 @@
 
   <label for="price">Price:</label>
   <input type="text" id="price" name="price"><br><br>
+
+  <label for="showAll">是否顯示全部:</label>
+  <input type="text" id="showAll" name="showAll"><br><br>
+
   <input type="submit" value="Submit">
 </form>
 
@@ -33,7 +37,8 @@
       brand: formData.get('brand'),
       item_name: formData.get('item_name'),
       incdate: formData.get('incdate'),
-      price: formData.get('price')
+      price: formData.get('price'),
+      showAll: formData.get('showAll')
     };
 
     fetch('/api/query', {

@@ -34,28 +34,33 @@ app.post('/api/query', (req, res) => {
     let item_name = req.body.item_name;
     let incdate = req.body.incdate;
     let price = req.body.price;
+    let showAll = req.body.showAll;
 
     let sql = 'SELECT * FROM CPUPRICE WHERE 1=1';
     let params = [];
 
-    if (brand) {
-        sql += ' AND brand = ?';
-        params.push(brand);
-    }
+    if (showAll === '是') {
+        // 如果選擇顯示全部，不加任何條件
+    } else {
+        if (brand) {
+            sql += ' AND brand = ?';
+            params.push(brand);
+        }
 
-    if (item_name) {
-        sql += ' AND item_name = ?';
-        params.push(item_name);
-    }
+        if (item_name) {
+            sql += ' AND item_name = ?';
+            params.push(item_name);
+        }
 
-    if (incdate) {
-        sql += ' AND incdate = ?';
-        params.push(incdate);
-    }
+        if (incdate) {
+            sql += ' AND incdate = ?';
+            params.push(incdate);
+        }
 
-    if (price) {
-        sql += ' AND price = ?';
-        params.push(price);
+        if (price) {
+            sql += ' AND price = ?';
+            params.push(price);
+        }
     }
 
     db.all(sql, params, (err, rows) => {
