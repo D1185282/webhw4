@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>AMD的CPU物價變化</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+<form id="cpuForm">
+  <label for="brand">Brand:</label>
+  <input type="text" id="brand" name="brand"><br><br>
+
+  <label for="CPU">CPU:</label>
+  <input type="text" id="CPU" name="item_name"><br><br>
+
+  <label for="incdate">Incdate:</label>
+  <input type="text" id="incdate" name="incdate"><br><br>
+
+  <label for="price">Price:</label>
+  <input type="text" id="price" name="price"><br><br>
+  <input type="submit" value="Submit">
+</form>
+
+<div id="dataTable"></div>
+
+<script>
+  document.getElementById('cpuForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    let formData = new FormData(event.target);
+    let data = {
+      brand: formData.get('brand'),
+      item_name: formData.get('item_name'),
+      incdate: formData.get('incdate'),
+      price: formData.get('price')
+    };
+
+    fetch('/api/query', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then(response => response.json())
+            .then(data => {
+              let table = '<table><tr><th>Brand</th><th>Item Name</th><th>Incdate</th><th>Price</th></tr>';
+              data.forEach(row => {
+                table += `<tr>
+                        <td>${row.brand}</td>
+                        <td>${row.item_name}</td>
+                        <td>${row.incdate}</td>
+                        <td>${row.price}</td>
+                      </tr>`;
+              });
+              table += '</table>';
+              document.getElementById('dataTable').innerHTML = table;
+            })
+            .catch(error => console.error('Error:', error));
+  });
+</script>
+</body>
+
+</html>
